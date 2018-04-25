@@ -1,0 +1,11 @@
+# folders
+src/
+support/
+
+# build/config
+.babelrc
+.eslintrc.js
+.yo-rc.json
+webpack-config.js
+
+*.log
