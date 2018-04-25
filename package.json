@@ -1,15 +1,14 @@
 {
-  "name": "@ti/anas",
-  "version": "0.0.0-alpha.1",
-  "description": "A module to grab files from a separate module and make them useable in your project",
+  "name": "anas",
+  "version": "0.0.0-alpha.2",
+  "description":
+    "A module to grab files from a separate module and make them useable in your project",
   "author": "Zachary Abresch <zachary.abresch+npm@thoughtindustries.com",
   "main": "dist/main.bundle.js",
   "engines": {
     "node": ">=8.10.0"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "license": "MIT",
   "scripts": {
     "start": "webpack --mode development",
