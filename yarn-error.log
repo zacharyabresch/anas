@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js run lint
+  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js remove --dev rimraf
 
 PATH: 
-  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/zacharyabresch/Documents/workspace/thought-industries/tooling/anas/node_modules/.bin:/Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin:./node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/yarn-[version]/bin:/usr/local/bin
+  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin:./node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/yarn-[version]/bin:/usr/local/bin
 
 Yarn version: 
   1.5.1
@@ -17,14 +17,15 @@ npm manifest:
   {
     "name": "@ti/anas",
     "version": "0.0.0-alpha.1",
-    "description":
-      "A module to grab files from a separate module and make them useable in your project",
+    "description": "A module to grab files from a separate module and make them useable in your project",
     "author": "Zachary Abresch <zachary.abresch+npm@thoughtindustries.com",
     "main": "dist/main.bundle.js",
     "engines": {
       "node": ">=8.10.0"
     },
-    "files": ["dist"],
+    "files": [
+      "dist"
+    ],
     "license": "MIT",
     "scripts": {
       "start": "webpack --mode development",
@@ -33,7 +34,8 @@ npm manifest:
       "test": "jest",
       "test:watch": "jest --watchAll",
       "build": "yarn run clean && webpack --mode production",
-      "prepare": "yarn run lint && yarn run test && yarn run build"
+      "prepublishOnly": "yarn run lint && yarn run build",
+      "link": "yarn run prepublishOnly && npm link"
     },
     "bin": {
       "anas": "dist/main.bundle.js"
@@ -45,6 +47,7 @@ npm manifest:
       "babel-preset-env": "^1.6.1",
       "babel-preset-react": "^6.24.1",
       "banner-webpack-plugin": "^0.2.3",
+      "copy-webpack-plugin": "^4.5.1",
       "eslint": "^4.19.1",
       "eslint-config-airbnb": "^16.1.0",
       "eslint-config-prettier": "^2.9.0",
@@ -60,6 +63,7 @@ npm manifest:
       "webpack-cli": "^2.0.15"
     },
     "dependencies": {
+      "commander": "^2.15.1",
       "uglifyjs-webpack-plugin": "^1.2.5"
     }
   }
@@ -1567,7 +1571,7 @@ Lockfile:
     dependencies:
       delayed-stream "~1.0.0"
   
-  commander@^2.11.0:
+  commander@^2.11.0, commander@^2.15.1:
     version "2.15.1"
     resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
   
@@ -1636,6 +1640,19 @@ Lockfile:
   copy-descriptor@^0.1.0:
     version "0.1.1"
     resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
+  
+  copy-webpack-plugin@^4.5.1:
+    version "4.5.1"
+    resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-4.5.1.tgz#fc4f68f4add837cc5e13d111b20715793225d29c"
+    dependencies:
+      cacache "^10.0.4"
+      find-cache-dir "^1.0.0"
+      globby "^7.1.1"
+      is-glob "^4.0.0"
+      loader-utils "^1.1.0"
+      minimatch "^3.0.4"
+      p-limit "^1.0.0"
+      serialize-javascript "^1.4.0"
   
   core-js@^1.0.0:
     version "1.2.7"
@@ -1887,6 +1904,13 @@ Lockfile:
       bn.js "^4.1.0"
       miller-rabin "^4.0.0"
       randombytes "^2.0.0"
+  
+  dir-glob@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/dir-glob/-/dir-glob-2.0.0.tgz#0b205d2b6aef98238ca286598a8204d29d0a0034"
+    dependencies:
+      arrify "^1.0.1"
+      path-type "^3.0.0"
   
   doctrine@1.5.0:
     version "1.5.0"
@@ -2678,6 +2702,17 @@ Lockfile:
       pify "^2.0.0"
       pinkie-promise "^2.0.0"
   
+  globby@^7.1.1:
+    version "7.1.1"
+    resolved "https://registry.yarnpkg.com/globby/-/globby-7.1.1.tgz#fb2ccff9401f8600945dfada97440cca972b8680"
+    dependencies:
+      array-union "^1.0.1"
+      dir-glob "^2.0.0"
+      glob "^7.1.2"
+      ignore "^3.3.5"
+      pify "^3.0.0"
+      slash "^1.0.0"
+  
   got@^7.0.0:
     version "7.1.0"
     resolved "https://registry.yarnpkg.com/got/-/got-7.1.0.tgz#05450fd84094e6bbea56f451a43a9c289166385a"
@@ -2925,7 +2960,7 @@ Lockfile:
     dependencies:
       minimatch "^3.0.4"
   
-  ignore@^3.3.3, ignore@^3.3.7:
+  ignore@^3.3.3, ignore@^3.3.5, ignore@^3.3.7:
     version "3.3.7"
     resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.7.tgz#612289bfb3c220e186a58118618d5be8c1bab021"
   
@@ -4560,7 +4595,7 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/p-lazy/-/p-lazy-1.0.0.tgz#ec53c802f2ee3ac28f166cc82d0b2b02de27a835"
   
-  p-limit@^1.1.0:
+  p-limit@^1.0.0, p-limit@^1.1.0:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-1.2.0.tgz#0e92b6bedcb59f022c13d0f1949dc82d15909f1c"
     dependencies:
@@ -6390,17 +6425,14 @@ Lockfile:
       yeoman-environment "^2.0.5"
 
 Trace: 
-  Error: Command failed.
-  Exit code: 1
-  Command: sh
-  Arguments: -c eslint src/**/*.js
-  Directory: /Users/zacharyabresch/Documents/workspace/thought-industries/tooling/anas
-  Output:
-  
-      at ProcessTermError.MessageError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:186:110)
-      at new ProcessTermError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:226:113)
-      at ChildProcess.<anonymous> (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:30281:17)
-      at emitTwo (events.js:126:13)
-      at ChildProcess.emit (events.js:214:7)
-      at maybeClose (internal/child_process.js:925:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
+  Error: Not enough arguments, expected at least 1.
+      at new MessageError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:186:110)
+      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:60368:13)
+      at Generator.next (<anonymous>)
+      at step (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:98:30)
+      at /usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:116:14
+      at new Promise (<anonymous>)
+      at new F (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:23451:28)
+      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:95:12)
+      at Object.run (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:60486:17)
+      at run (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:89113:20)

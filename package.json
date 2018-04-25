@@ -18,7 +18,8 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "build": "yarn run clean && webpack --mode production",
-    "prepare": "yarn run lint && yarn run test && yarn run build"
+    "prepublishOnly": "yarn run lint && yarn run build",
+    "link": "yarn run prepublishOnly && npm link"
   },
   "bin": {
     "anas": "dist/main.bundle.js"
@@ -30,6 +31,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "banner-webpack-plugin": "^0.2.3",
+    "copy-webpack-plugin": "^4.5.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
@@ -40,11 +42,12 @@
     "jest-cli": "^22.4.3",
     "prettier": "^1.12.1",
     "pretty-quick": "^1.4.1",
-    "rimraf": "^2.6.2",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.15"
   },
   "dependencies": {
+    "commander": "^2.15.1",
+    "rimraf": "^2.6.2",
     "uglifyjs-webpack-plugin": "^1.2.5"
   }
 }

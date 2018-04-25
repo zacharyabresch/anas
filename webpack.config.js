@@ -1,5 +1,6 @@
-const webpack = require("webpack");
 const path = require("path");
+const webpack = require("webpack");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
@@ -50,7 +51,8 @@ module.exports = {
 		new webpack.BannerPlugin({
 			banner: "#!/usr/bin/env node",
 			raw: true
-		})
+		}),
+		new CopyWebpackPlugin(["support/.anasrc.js"])
 	],
 	mode: "development",
 
