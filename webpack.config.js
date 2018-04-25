@@ -1,5 +1,5 @@
-const webpack = require('webpack');
-const path = require('path');
+const webpack = require("webpack");
+const path = require("path");
 
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
@@ -9,7 +9,7 @@ const path = require('path');
  *
  */
 
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 /*
  * SplitChunksPlugin is enabled by default and replaced
@@ -26,31 +26,37 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
 	output: {
-		filename: '[name].[chunkhash].js',
-		chunkFilename: '[name].[chunkhash].js',
-		path: path.resolve(__dirname, 'dist')
+		filename: "[name].bundle.js",
+		chunkFilename: "[name].[chunkhash].js",
+		path: path.resolve(__dirname, "dist")
 	},
-
+	target: "node",
 	module: {
 		rules: [
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				loader: 'babel-loader',
+				loader: "babel-loader",
 
 				options: {
-					presets: ['env']
+					presets: ["env"]
 				}
 			}
 		]
 	},
 
-	plugins: [new UglifyJSPlugin()],
-	mode: 'development',
+	plugins: [
+		new UglifyJSPlugin(),
+		new webpack.BannerPlugin({
+			banner: "#!/usr/bin/env node",
+			raw: true
+		})
+	],
+	mode: "development",
 
 	optimization: {
 		splitChunks: {
-			chunks: 'async',
+			chunks: "async",
 			minSize: 30000,
 			minChunks: 1,
 			name: true,

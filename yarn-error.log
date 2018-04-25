@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js  --version
+  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js run lint
 
 PATH: 
-  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin:./node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/yarn-[version]/bin:/usr/local/bin
+  /Users/zacharyabresch/.nvm/versions/node/v8.10.0/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/Users/zacharyabresch/Documents/workspace/thought-industries/tooling/anas/node_modules/.bin:/Users/zacharyabresch/.nvm/versions/node/v8.10.0/bin:./node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/yarn-[version]/bin:/usr/local/bin
 
 Yarn version: 
   1.5.1
@@ -15,14 +15,28 @@ Platform:
 
 npm manifest: 
   {
-    "name": "anas",
-    "version": "1.0.0",
-    "main": "index.js",
+    "name": "@ti/anas",
+    "version": "0.0.0-alpha.1",
+    "description":
+      "A module to grab files from a separate module and make them useable in your project",
+    "author": "Zachary Abresch <zachary.abresch+npm@thoughtindustries.com",
+    "main": "dist/main.bundle.js",
+    "engines": {
+      "node": ">=8.10.0"
+    },
+    "files": ["dist"],
     "license": "MIT",
     "scripts": {
       "start": "webpack --mode development",
-      "build": "webpack --mode production",
-      "test": "jest --watchAll"
+      "lint": "eslint src/**/*.js",
+      "clean": "rimraf ./dist/",
+      "test": "jest",
+      "test:watch": "jest --watchAll",
+      "build": "yarn run clean && webpack --mode production",
+      "prepare": "yarn run lint && yarn run test && yarn run build"
+    },
+    "bin": {
+      "anas": "dist/main.bundle.js"
     },
     "devDependencies": {
       "babel-core": "^6.26.0",
@@ -30,6 +44,7 @@ npm manifest:
       "babel-loader": "^7.1.4",
       "babel-preset-env": "^1.6.1",
       "babel-preset-react": "^6.24.1",
+      "banner-webpack-plugin": "^0.2.3",
       "eslint": "^4.19.1",
       "eslint-config-airbnb": "^16.1.0",
       "eslint-config-prettier": "^2.9.0",
@@ -40,8 +55,12 @@ npm manifest:
       "jest-cli": "^22.4.3",
       "prettier": "^1.12.1",
       "pretty-quick": "^1.4.1",
+      "rimraf": "^2.6.2",
       "webpack": "^4.6.0",
       "webpack-cli": "^2.0.15"
+    },
+    "dependencies": {
+      "uglifyjs-webpack-plugin": "^1.2.5"
     }
   }
 
@@ -1073,6 +1092,10 @@ Lockfile:
   balanced-match@^1.0.0:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
+  
+  banner-webpack-plugin@^0.2.3:
+    version "0.2.3"
+    resolved "https://registry.yarnpkg.com/banner-webpack-plugin/-/banner-webpack-plugin-0.2.3.tgz#e9dee9d9644ccef1fd970e11d82408aff42290eb"
   
   base64-js@^1.0.2:
     version "1.3.0"
@@ -5866,7 +5889,7 @@ Lockfile:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
   
-  uglifyjs-webpack-plugin@^1.2.4:
+  uglifyjs-webpack-plugin@^1.2.4, uglifyjs-webpack-plugin@^1.2.5:
     version "1.2.5"
     resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.2.5.tgz#2ef8387c8f1a903ec5e44fa36f9f3cbdcea67641"
     dependencies:
@@ -6367,14 +6390,17 @@ Lockfile:
       yeoman-environment "^2.0.5"
 
 Trace: 
-  Error: Command " --version" not found.
-      at new MessageError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:186:110)
-      at /usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:87307:17
-      at Generator.next (<anonymous>)
-      at step (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:98:30)
-      at /usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:116:14
-      at new Promise (<anonymous>)
-      at new F (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:23451:28)
-      at /usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:95:12
-      at runCommand (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:87312:22)
-      at Object.<anonymous> (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:87412:14)
+  Error: Command failed.
+  Exit code: 1
+  Command: sh
+  Arguments: -c eslint src/**/*.js
+  Directory: /Users/zacharyabresch/Documents/workspace/thought-industries/tooling/anas
+  Output:
+  
+      at ProcessTermError.MessageError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:186:110)
+      at new ProcessTermError (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/usr/local/Cellar/yarn/1.5.1_1/libexec/lib/cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
