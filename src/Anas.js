@@ -24,14 +24,14 @@ class Anas {
     this.instance = this;
   }
 
-  saveStatus(files) {
+  get status() {
+    return JSON.parse(fs.readFileSync(this.statusPath, { encoding: "utf8" }));
+  }
+
+  set status(files) {
     fs.writeFileSync(this.statusPath, JSON.stringify({ files }), {
       encoding: "utf8"
     });
-  }
-
-  getStatus() {
-    return JSON.parse(fs.readFileSync(this.statusPath, { encoding: "utf8" }));
   }
 
   copy(files) {
@@ -45,7 +45,7 @@ class Anas {
       files.forEach(file => {
         fs.copyFileSync(this.sourceFile(file), this.destinationFile(file));
       });
-      this.saveStatus(files);
+      this.status = files;
     });
   }
 
@@ -59,7 +59,7 @@ class Anas {
 
   cleanup() {
     rimraf(`${this.cloneDestination}/${this.repositoryName}`, handleError);
-    const { files } = this.getStatus();
+    const { files } = this.status;
     files.forEach(file => {
       rimraf(this.destinationFile(file), handleError);
     });
