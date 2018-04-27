@@ -1,14 +1,15 @@
 {
   "name": "anas",
   "version": "0.0.0-alpha.2",
-  "description":
-    "A module to grab files from a separate module and make them useable in your project",
+  "description": "A module to grab files from a separate module and make them useable in your project",
   "author": "Zachary Abresch <zachary.abresch+npm@thoughtindustries.com",
   "main": "dist/main.bundle.js",
   "engines": {
     "node": ">=8.10.0"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "scripts": {
     "start": "webpack --mode development",
@@ -25,8 +26,10 @@
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.3",
     "babel-jest": "^22.4.3",
     "babel-loader": "^7.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "banner-webpack-plugin": "^0.2.3",
