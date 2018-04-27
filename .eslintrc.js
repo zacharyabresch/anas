@@ -1,1 +1,5 @@
-module.exports = { env: { jest: true }, extends: ["airbnb", "prettier"] };
+module.exports = {
+  parser: "babel-eslint",
+  env: { jest: true },
+  extends: ["airbnb", "prettier"]
+};

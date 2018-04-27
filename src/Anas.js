@@ -10,39 +10,60 @@ const handleError = err => {
 };
 
 class Anas {
-  constructor({ repository, copyDestination, cloneDestination, file }) {
-    this.file = file;
-    this.repository = repository;
+  static instance;
+
+  constructor(options) {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.repository = options.repository;
     this.repositoryName = extractRepoName(this.repository);
-    this.copyDestination = copyDestination;
-    this.cloneDestination = cloneDestination;
+    this.copyDestination = options.copyDestination;
+    this.cloneDestination = options.cloneDestination;
+    this.statusPath = path.resolve("/tmp", "anas.json");
+    this.instance = this;
   }
 
-  copy() {
-    exec(this.cloneCmd(), (err, stdout, stderr) => {
+  get status() {
+    return JSON.parse(fs.readFileSync(this.statusPath, { encoding: "utf8" }));
+  }
+
+  set status(files) {
+    fs.writeFileSync(this.statusPath, JSON.stringify({ files }), {
+      encoding: "utf8"
+    });
+  }
+
+  copy(files) {
+    exec(this.cloneCmd(), (err, stdout) => {
       if (err) {
         console.error(`exec error: ${err}`);
         return;
       }
-      console.log(`stderr: ${stderr}`);
-      console.log(`stdout: ${stdout}`);
-      // copy file
+      console.log(stdout);
       console.log("Copying source file to destination ...");
-      fs.copyFileSync(this.sourceFile(), this.destinationFile());
+      files.forEach(file => {
+        fs.copyFileSync(this.sourceFile(file), this.destinationFile(file));
+      });
+      this.status = files;
     });
   }
 
-  sourceFile() {
-    return path.resolve(this.cloneDestination, this.repositoryName, this.file);
+  sourceFile(file) {
+    return path.resolve(this.cloneDestination, this.repositoryName, file);
   }
 
-  destinationFile() {
-    return path.resolve(this.copyDestination, this.file);
+  destinationFile(file) {
+    return path.resolve(this.copyDestination, file);
   }
 
   cleanup() {
     rimraf(`${this.cloneDestination}/${this.repositoryName}`, handleError);
-    rimraf(this.destinationFile(), handleError);
+    const { files } = this.status;
+    files.forEach(file => {
+      rimraf(this.destinationFile(file), handleError);
+    });
+    rimraf(this.statusPath, handleError);
   }
 
   cloneCmd() {
